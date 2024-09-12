@@ -1,23 +1,23 @@
-export type BlockchainListType = {
-  id: number;
-  value: string;
-};
+import { BlockchainType } from "../types/types";
 
-export const mockBCListService = (): BlockchainListType[] => {
+export const mockBCListService = (): BlockchainType[] => {
   return mockBCList;
 };
 
-const mockBCList: BlockchainListType[] = [
+const mockBCList: BlockchainType[] = [
   {
     id: 1,
-    value: "bitcoin",
+    name: "bitcoin",
+    symbol: "BTC",
   },
   {
     id: 2,
-    value: "ethereum",
+    name: "ethereum",
+    symbol: "ETH",
   },
   {
     id: 3,
-    value: "ripple",
+    name: "ripple",
+    symbol: "XRP",
   },
 ];

@@ -9,7 +9,7 @@ export type CustomMUISelectProps<T extends FieldValues> = {
   control: Control<T>;
   initialData: T | undefined;
   name: keyof T;
-  options: { value: string; id: number }[];
+  options: BlockchainType[];
   setValue: UseFormSetValue<T>;
 };
 
@@ -29,4 +29,10 @@ export type OrderDataType = {
   quantity?: number;
   usdValue?: number;
   expirationDate?: string;
+};
+
+export type BlockchainType = {
+  id: number;
+  name: string;
+  symbol: string;
 };

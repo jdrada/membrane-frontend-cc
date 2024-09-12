@@ -39,7 +39,7 @@ export default function USDCostDisplay({
           }}
         >
           <Typography level="h3" sx={{}}>
-            {value >= 0 ? formatUSD(value) : "Enter Quantity"}
+            {value >= 0 ? formatUSD(value) : "Invalid Quantity"}
           </Typography>
           {
             <Typography level="body-xs">
