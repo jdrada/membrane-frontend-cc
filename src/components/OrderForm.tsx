@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -19,6 +19,7 @@ import { DirectionEnum, OrderDataType } from "../types/types";
 import DirectionRadioGroup from "./DirectionRadioGroup";
 import { v4 as uuidv4 } from "uuid";
 import USDCostDisplay from "./USDCostDisplay";
+import UTCTimeDisplay from "./UTCTimeDisplay";
 
 type OrderFormProps = {
   initialData?: OrderDataType;
@@ -50,22 +51,19 @@ const OrderForm: React.FC<OrderFormProps> = ({
       usdValue: 0,
     },
   });
-  const [displayedUSD, setDisplayedUSD] = useState<number>(0);
   const watchQuantity = watch("quantity");
+  const watchExpirationDate = watch("expirationDate");
   const watchCryptocurrency = watch("cryptocurrency");
-  const { price, isPending } = CryptoPrice(watchCryptocurrency);
+  const watchUSDValue = watch("usdValue");
+  const { price } = CryptoPrice(watchCryptocurrency);
 
   useEffect(() => {
-    if (watchCryptocurrency && watchQuantity) {
-      if (isPending || price === undefined || price === null) {
-        setValue("usdValue", 0);
-        setDisplayedUSD(0);
-        return;
-      }
-      setValue("usdValue", watchQuantity * price);
-      setDisplayedUSD(watchQuantity * price);
-    }
-  }, [watchQuantity, watchCryptocurrency, isPending, price]);
+    const calculateUSDValue = (qty: number, price: number) => {
+      return qty * price;
+    };
+    const value = calculateUSDValue(watchQuantity ?? 0, price ?? 0);
+    setValue("usdValue", value);
+  }, [watchQuantity, watchCryptocurrency, price]);
 
   const onSubmit = (data: OrderDataType) => {
     if (initialData?.id) {
@@ -79,13 +77,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
     }
 
     reset();
-    if (onSubmitSuccess) onSubmitSuccess(); // Optional callback after successful submission
-  };
-
-  const setAmountHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (Number(e.target.value) < 0) return;
-    setDisplayedUSD(Number(e.target.value));
-    setValue("quantity", Number(e.target.value));
+    if (onSubmitSuccess) onSubmitSuccess();
   };
 
   return (
@@ -122,83 +114,82 @@ const OrderForm: React.FC<OrderFormProps> = ({
           {errors.direction && <ErrorText>This field is required</ErrorText>}
         </FormControl>
 
-        <Stack sx={{ width: "full" }} spacing={2}>
-          <FormControl>
-            <FormLabel id="direction-label" sx={{ fontWeight: "bold" }}>
-              Cryptocurrency
-            </FormLabel>
-            <BlockchainOrderSelect
-              control={control}
-              setValue={setValue}
-              initialData={initialData}
-              name={"cryptocurrency"}
-              options={blockchainList}
+        <FormControl>
+          <FormLabel id="direction-label" sx={{ fontWeight: "bold" }}>
+            Cryptocurrency
+          </FormLabel>
+          <BlockchainOrderSelect
+            control={control}
+            setValue={setValue}
+            initialData={initialData}
+            name={"cryptocurrency"}
+            options={blockchainList}
+          />
+          {errors.cryptocurrency ? (
+            <ErrorText>This field is required</ErrorText>
+          ) : (
+            <InfoText>Select the cryptocurrency you want to buy/sell</InfoText>
+          )}
+        </FormControl>
+
+        <FormControl>
+          <Stack direction={{ base: "column", md: "row" }} gap={2}>
+            <Box width={"100%"}>
+              <FormLabel id="direction-label" sx={{ fontWeight: "bold" }}>
+                Quantity
+              </FormLabel>
+              <Input
+                sx={{ width: "100%" }}
+                title="quantity"
+                color={errors.quantity ? "danger" : "neutral"}
+                {...register("quantity", {
+                  required: true,
+                  min: 0.00001,
+                  valueAsNumber: true,
+                  validate: {
+                    positive: (v) => {
+                      return v ? v > 0 : false;
+                    },
+                  },
+                })}
+              />
+              {errors.quantity ? (
+                <ErrorText>Quantity must be greater than 0.00001</ErrorText>
+              ) : (
+                <InfoText>
+                  Enter the quantity of cryptocurrency you want to buy/sell
+                </InfoText>
+              )}
+            </Box>
+            <USDCostDisplay
+              watchValue={watchUSDValue}
+              watchQuantity={watchQuantity}
+              watchCryptocurrency={watchCryptocurrency}
+              price={price}
             />
-            {errors.cryptocurrency ? (
-              <ErrorText>This field is required</ErrorText>
-            ) : (
-              <InfoText>
-                Select the cryptocurrency you want to buy/sell
-              </InfoText>
-            )}
-          </FormControl>
+          </Stack>
+        </FormControl>
 
-          <FormControl>
-            <Stack direction={"row"} gap={2}>
-              <Box width={"100%"}>
-                <FormLabel id="direction-label" sx={{ fontWeight: "bold" }}>
-                  Quantity
-                </FormLabel>
-                <Input
-                  sx={{ width: "100%" }}
-                  title="quantity"
-                  color={errors.quantity ? "danger" : "neutral"}
-                  placeholder="Enter quantity"
-                  onChange={(e) => {
-                    setAmountHandler(e);
-                  }}
-                />
-                {errors.quantity ? (
-                  <ErrorText>Quantity must be greater than 0</ErrorText>
-                ) : (
-                  <InfoText>
-                    Enter the quantity of cryptocurrency you want to buy/sell
-                  </InfoText>
-                )}
-              </Box>
-              <USDCostDisplay
-                value={displayedUSD}
-                watchQuantity={watchQuantity}
-                watchCryptocurrency={watchCryptocurrency}
-                price={price}
+        <FormControl>
+          <Stack
+            direction={{ base: "column", md: "row" }}
+            gap={{ base: 0, md: 2 }}
+          >
+            <Box width={"100%"}>
+              <FormLabel id="time-label">Expiration Date</FormLabel>
+              <Input
+                type="datetime-local"
+                {...register("expirationDate", { required: true })}
               />
-            </Stack>
-          </FormControl>
-
-          <FormControl>
-            <Stack direction={"row"} gap={2}>
-              <Box width={"100%"}>
-                <FormLabel id="time-label">Expiration Date</FormLabel>
-                <Input
-                  type="datetime-local"
-                  size="sm"
-                  {...register("expirationDate", { required: true })}
-                />
-                {errors.expirationDate ? (
-                  <ErrorText>Expiration date is required</ErrorText>
-                ) : (
-                  <InfoText>Enter the expiration date for the order</InfoText>
-                )}
-              </Box>
-              <USDCostDisplay
-                value={displayedUSD}
-                watchQuantity={watchQuantity}
-                watchCryptocurrency={watchCryptocurrency}
-                price={price}
-              />
-            </Stack>
-          </FormControl>
-        </Stack>
+              {errors.expirationDate ? (
+                <ErrorText>Expiration date is required</ErrorText>
+              ) : (
+                <InfoText>Enter the expiration date for the order</InfoText>
+              )}
+            </Box>
+            <UTCTimeDisplay expirationDate={watchExpirationDate} />
+          </Stack>
+        </FormControl>
 
         <Button
           type="submit"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import OrderForm from "../components/OrderForm";
 import OrderList from "../components/OrderList";
 import { useOrderStore } from "../store/useOrderStore";
-import { Container, Typography } from "@mui/joy";
+import { Container } from "@mui/joy";
 
 const OrderPage: React.FC = () => {
   const [editingOrderId, setEditingOrderId] = useState<string | null>(null);

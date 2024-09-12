@@ -5,21 +5,22 @@ import { formatUSD } from "../utils/currencyUtils";
 import { capitalizeFirstLetter } from "../utils/stringUtils";
 
 export default function USDCostDisplay({
-  value,
-  watchQuantity,
+  watchValue,
   watchCryptocurrency,
   price,
 }: {
-  value: number;
+  watchValue: number | undefined;
   watchQuantity: number | undefined;
   watchCryptocurrency: string | undefined;
   price: number | undefined | null;
 }) {
+  const value = watchValue ?? 0;
+  const cryptocurrency = watchCryptocurrency ?? "";
   return (
     <Card
       size="sm"
       variant="soft"
-      color="neutral"
+      color={value >= 0 ? "neutral" : "danger"}
       invertedColors
       sx={{
         mt: 2,
@@ -38,12 +39,14 @@ export default function USDCostDisplay({
           }}
         >
           <Typography level="h3" sx={{}}>
-            {formatUSD(value)}
+            {value >= 0 ? formatUSD(value) : "Enter Quantity"}
           </Typography>
-          <Typography level="body-xs">
-            {watchQuantity || 0} {capitalizeFirstLetter(watchCryptocurrency)} @{" "}
-            {formatUSD(price || 0)} USD
-          </Typography>
+          {
+            <Typography level="body-xs">
+              {capitalizeFirstLetter(cryptocurrency)} @ {formatUSD(price || 0)}{" "}
+              USD
+            </Typography>
+          }
         </CardContent>
       </CardContent>
     </Card>

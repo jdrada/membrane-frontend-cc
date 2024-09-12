@@ -15,7 +15,7 @@ export const CryptoPrice = (crypto: string | undefined) => {
       setPrice(crypto, price ?? 0);
       return price;
     },
-    staleTime: 1 * 60 * 1000,
+    staleTime: 1000 * 60 * 5,
   });
 
   return {

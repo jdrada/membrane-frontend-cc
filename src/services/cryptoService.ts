@@ -15,7 +15,6 @@ export const fetchCryptoPrice = async (
     if (!response.data[crypto]) {
       throw new Error("Invalid cryptocurrency");
     }
-    console.log(response.data[crypto].usd, "ppepe");
     return response.data[crypto].usd;
   } catch (error) {
     console.error(error);
