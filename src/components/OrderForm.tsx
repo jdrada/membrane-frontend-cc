@@ -84,13 +84,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
   };
 
   return (
-    <Box
-      invertedColors
-      color="primary"
-      component={Card}
-      size="lg"
-      sx={{ margin: "0 auto" }}
-    >
+    <Box color="primary" component={Card} size="lg" sx={{ margin: "0 auto" }}>
       <Stack
         direction={"row"}
         sx={{
@@ -186,7 +180,9 @@ const OrderForm: React.FC<OrderFormProps> = ({
                 })}
               />
               {errors.quantity ? (
-                <ErrorText>Quantity must be greater than 0.00001</ErrorText>
+                <ErrorText>
+                  Quantity must be a number greater than 0.00001
+                </ErrorText>
               ) : (
                 <InfoText>
                   Enter the quantity of cryptocurrency you want to buy/sell
