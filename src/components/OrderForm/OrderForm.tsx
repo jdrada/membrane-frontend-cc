@@ -10,17 +10,17 @@ import {
   Stack,
   Card,
 } from "@mui/joy";
-import { CryptoPrice } from "../hooks/useCryptoPrice";
-import { DirectionEnum, OrderDataType } from "../types/types";
-import DirectionRadioGroup from "./OrderForm/DirectionRadioGroup";
-import USDCostDisplay from "./OrderForm/USDCostDisplay";
-import UTCTimeDisplay from "./OrderForm/UTCTimeDisplay";
+import { CryptoPrice } from "../../hooks/useCryptoPrice";
+import { DirectionEnum, OrderDataType } from "../../types/types";
+import DirectionRadioGroup from "./DirectionRadioGroup";
+import USDCostDisplay from "./USDCostDisplay";
+import UTCTimeDisplay from "./UTCTimeDisplay";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
-import { ErrorText, InfoText } from "./OrderForm/FormTextHelpers";
-import BlockchainOrderSelect from "./OrderForm/BlockchainOrderSelect";
-import { useOrders } from "../hooks/useOrders";
-import { useGetBlockchains } from "../hooks/useGetBlockchains";
+import { ErrorText, InfoText } from "./FormTextHelpers";
+import BlockchainOrderSelect from "./BlockchainOrderSelect";
+import { useOrders } from "../../hooks/useOrders";
+import { useGetBlockchains } from "../../hooks/useGetBlockchains";
 
 type OrderFormProps = {
   initialData?: OrderDataType | null;

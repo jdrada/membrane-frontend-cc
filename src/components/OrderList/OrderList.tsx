@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { useOrderStore } from "../store/useOrderStore";
+import { useOrderStore } from "../../store/useOrderStore";
 import Table from "@mui/joy/Table";
-import { capitalizeFirstLetter } from "../utils/stringUtils";
+import { capitalizeFirstLetter } from "../../utils/stringUtils";
 import { Box, Button, Card, Drawer, Stack, Typography } from "@mui/joy";
-import { formatUSD } from "../utils/currencyUtils";
-import { convertISOtoUTC } from "../utils/dateUtils";
+import { formatUSD } from "../../utils/currencyUtils";
+import { convertISOtoUTC } from "../../utils/dateUtils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import OrderForm from "./OrderForm";
-import { OrderDataType } from "../types/types";
+import OrderForm from "../OrderForm/OrderForm";
+import { OrderDataType } from "../../types/types";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { TD, TH } from "./TableStuff";
 
 const OrderList: React.FC = () => {
   const [editOrder, setEditOrder] = useState<{
@@ -165,42 +166,3 @@ const OrderList: React.FC = () => {
 };
 
 export default OrderList;
-
-const TH = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <th>
-      <Typography
-        level="body-sm"
-        sx={{
-          fontWeight: "bold",
-          color: "black",
-          textAlign: "center",
-        }}
-      >
-        {children}
-      </Typography>
-    </th>
-  );
-};
-
-const TD = ({
-  children,
-  text,
-}: {
-  children?: React.ReactNode;
-  text?: string | number;
-}) => {
-  return (
-    <td>
-      <Typography
-        level="body-sm"
-        sx={{
-          textAlign: "center",
-        }}
-      >
-        {text}
-      </Typography>
-      {children}
-    </td>
-  );
-};
