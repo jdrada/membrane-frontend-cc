@@ -23,7 +23,7 @@ export type CustomMUIRadioGroupProps<T extends FieldValues> = {
 export type DirectionType = DirectionEnum;
 
 export type OrderDataType = {
-  id?: number;
+  id?: string;
   cryptocurrency?: string;
   direction?: DirectionType;
   quantity?: number;

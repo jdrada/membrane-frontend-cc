@@ -2,7 +2,7 @@
 import { Select, Option } from "@mui/joy";
 import { Controller } from "react-hook-form";
 import { CustomMUISelectProps, OrderDataType } from "../types/types";
-import { capitalizeFirstLetter } from "../utils/helpers";
+import { capitalizeFirstLetter } from "../utils/stringUtils";
 
 const BlockchainOrderSelect = ({
   control,
@@ -26,7 +26,6 @@ const BlockchainOrderSelect = ({
                 (event?.target as HTMLInputElement).id as string
               );
             }}
-            size="sm"
             {...field}
           >
             {options.map((option) => (

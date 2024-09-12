@@ -4,7 +4,7 @@ import {
   DirectionEnum,
   OrderDataType,
 } from "../types/types";
-import { capitalizeFirstLetter } from "../utils/helpers";
+import { capitalizeFirstLetter } from "../utils/stringUtils";
 
 const DirectionRadioGroup = ({
   initialData,
@@ -13,6 +13,7 @@ const DirectionRadioGroup = ({
 }: CustomMUIRadioGroupProps<OrderDataType>) => {
   return (
     <RadioGroup
+      color="neutral"
       id="direction"
       aria-labelledby="direction-label"
       defaultValue={initialData?.direction || DirectionEnum.BUY}
@@ -26,10 +27,10 @@ const DirectionRadioGroup = ({
     >
       {options.map((option) => (
         <Radio
+          color="neutral"
           key={option.direction}
           value={option.direction}
           label={capitalizeFirstLetter(option.direction)}
-          size="sm"
         />
       ))}
     </RadioGroup>
