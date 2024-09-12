@@ -20,6 +20,8 @@ import DirectionRadioGroup from "./DirectionRadioGroup";
 import { v4 as uuidv4 } from "uuid";
 import USDCostDisplay from "./USDCostDisplay";
 import UTCTimeDisplay from "./UTCTimeDisplay";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 
 type OrderFormProps = {
   initialData?: OrderDataType;
@@ -51,6 +53,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
       usdValue: 0,
     },
   });
+  const watchDirection = watch("direction");
   const watchQuantity = watch("quantity");
   const watchExpirationDate = watch("expirationDate");
   const watchCryptocurrency = watch("cryptocurrency");
@@ -88,14 +91,43 @@ const OrderForm: React.FC<OrderFormProps> = ({
       size="lg"
       sx={{ margin: "0 auto" }}
     >
-      <Box>
-        <Typography level="h1" sx={{ fontSize: "xl" }}>
-          Create OTC Order
-        </Typography>
-        <Typography level="body-sm">
-          Fill out the form to create a new OTC order
-        </Typography>
-      </Box>
+      <Stack
+        direction={"row"}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Box>
+          <Typography level="h1" sx={{ fontSize: "xl" }}>
+            Create OTC Order
+          </Typography>
+          <Typography level="body-sm">
+            Fill out the form to create a new OTC order
+          </Typography>
+        </Box>
+        <Stack
+          invertedColors
+          variant="soft"
+          color="primary"
+          component={Card}
+          direction={"row"}
+          gap={1}
+          sx={{
+            alignItems: "center",
+            p: 2,
+          }}
+        >
+          <Typography level="body-md">
+            {watchDirection === DirectionEnum.BUY ? "Buy" : "Sell"}
+          </Typography>
+          {watchDirection === DirectionEnum.BUY ? (
+            <ShoppingCartOutlinedIcon fontSize="small" />
+          ) : (
+            <SellOutlinedIcon fontSize="small" />
+          )}
+        </Stack>
+      </Stack>
 
       <form onSubmit={handleSubmit(onSubmit)} className="otc-form">
         <FormControl>
@@ -178,6 +210,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
             <Box width={"100%"}>
               <FormLabel id="time-label">Expiration Date</FormLabel>
               <Input
+                color={errors.expirationDate ? "danger" : "neutral"}
                 type="datetime-local"
                 {...register("expirationDate", { required: true })}
               />

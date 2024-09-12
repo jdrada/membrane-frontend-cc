@@ -8,7 +8,6 @@ export default function UTCTimeDisplay({
 }: {
   expirationDate: string | undefined;
 }) {
-  console.log(expirationDate);
   return (
     <Card
       size="sm"
