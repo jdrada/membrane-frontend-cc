@@ -10,17 +10,19 @@ import {
   Stack,
   Card,
 } from "@mui/joy";
-import { useOrderStore } from "../store/useOrderStore";
-import { CryptoPrice } from "../hooks/useCryptoPrice";
-import BlockchainOrderSelect from "./BlockchainOrderSelect";
-import { mockBCListService } from "../services/blockchainService";
-import { DirectionEnum, OrderDataType } from "../types/types";
+import { useOrderStore } from "../../store/useOrderStore";
+import { CryptoPrice } from "../../hooks/useCryptoPrice";
+
+import { mockBCListService } from "../../services/blockchainService";
+import { DirectionEnum, OrderDataType } from "../../types/types";
 import DirectionRadioGroup from "./DirectionRadioGroup";
 import { v4 as uuidv4 } from "uuid";
 import USDCostDisplay from "./USDCostDisplay";
 import UTCTimeDisplay from "./UTCTimeDisplay";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
+import { ErrorText, InfoText } from "./FormTextHelpers";
+import BlockchainOrderSelect from "./BlockchainOrderSelect";
 
 type OrderFormProps = {
   initialData?: OrderDataType;
@@ -34,6 +36,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
   const blockchainList = useMemo(() => {
     return mockBCListService();
   }, []);
+
   const {
     formState: { errors },
     control,
@@ -240,15 +243,3 @@ const OrderForm: React.FC<OrderFormProps> = ({
 };
 
 export default OrderForm;
-
-const ErrorText = React.memo(({ children }: { children: React.ReactNode }) => (
-  <Typography color="danger" fontSize={12} sx={{ mt: 0.5 }}>
-    {children}
-  </Typography>
-));
-
-const InfoText = React.memo(({ children }: { children: React.ReactNode }) => (
-  <Typography color="neutral" fontSize={12} sx={{ mt: 0.5 }}>
-    {children}
-  </Typography>
-));

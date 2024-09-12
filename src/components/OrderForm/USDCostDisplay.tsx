@@ -1,8 +1,8 @@
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
-import { formatUSD } from "../utils/currencyUtils";
-import { capitalizeFirstLetter } from "../utils/stringUtils";
+import { formatUSD } from "../../utils/currencyUtils";
+import { capitalizeFirstLetter } from "../../utils/stringUtils";
 
 export default function USDCostDisplay({
   watchValue,

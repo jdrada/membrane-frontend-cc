@@ -3,8 +3,8 @@ import {
   CustomMUIRadioGroupProps,
   DirectionEnum,
   OrderDataType,
-} from "../types/types";
-import { capitalizeFirstLetter } from "../utils/stringUtils";
+} from "../../types/types";
+import { capitalizeFirstLetter } from "../../utils/stringUtils";
 
 const DirectionRadioGroup = ({
   initialData,

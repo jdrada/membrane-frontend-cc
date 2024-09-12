@@ -1,7 +1,7 @@
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
-import { convertISOtoUTC } from "../utils/dateUtils";
+import { convertISOtoUTC } from "../../utils/dateUtils";
 
 export default function UTCTimeDisplay({
   expirationDate,

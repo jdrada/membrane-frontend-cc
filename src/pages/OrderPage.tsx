@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import OrderForm from "../components/OrderForm";
+import OrderForm from "../components/OrderForm/OrderForm";
 import OrderList from "../components/OrderList";
 import { useOrderStore } from "../store/useOrderStore";
 import { Container, Snackbar, Stack, Typography } from "@mui/joy";
