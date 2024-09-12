@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 
 type Order = {
   id: number;
@@ -6,7 +6,7 @@ type Order = {
   cryptocurrency: string;
   quantity: number;
   usdValue: number;
-  expirationDate: string; // UTC
+  expirationDate: string;
 };
 
 type OrderState = {
