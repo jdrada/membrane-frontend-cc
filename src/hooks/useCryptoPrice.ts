@@ -14,7 +14,9 @@ export const CryptoPrice = (crypto: string | undefined) => {
       return price;
     },
     enabled: !!crypto,
-    /* Saving the price to a store is overkill for this App, so we'll just stale and refetch every 5 minutes -Juan */
+    /* Saving the price to a store is overkill, so we'll just stale and refetch every 5 minutes.
+    I'd only do it if I foresee needing real-time updates or reusable price data across the app 
+    -Juan */
     staleTime: 1000 * 60 * 5,
   });
 
