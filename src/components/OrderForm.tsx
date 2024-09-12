@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -32,10 +31,9 @@ const OrderForm: React.FC<OrderFormProps> = ({
   initialData,
   onSubmitSuccess,
 }) => {
-  const blockchainList = mockBCListService();
-  const addOrder = useOrderStore((state) => state.addOrder);
-  const editOrder = useOrderStore((state) => state.editOrder);
-
+  const blockchainList = useMemo(() => {
+    return mockBCListService();
+  }, []);
   const {
     formState: { errors },
     control,
@@ -53,34 +51,41 @@ const OrderForm: React.FC<OrderFormProps> = ({
       usdValue: 0,
     },
   });
+  const addOrder = useOrderStore((state) => state.addOrder);
+  const editOrder = useOrderStore((state) => state.editOrder);
   const watchDirection = watch("direction");
   const watchQuantity = watch("quantity");
   const watchExpirationDate = watch("expirationDate");
   const watchCryptocurrency = watch("cryptocurrency");
   const watchUSDValue = watch("usdValue");
   const { price } = CryptoPrice(watchCryptocurrency);
+  const displayPrice = price ?? 0;
 
   useEffect(() => {
-    const calculateUSDValue = (qty: number, price: number) => {
-      return qty * price;
-    };
-    const value = calculateUSDValue(watchQuantity ?? 0, price ?? 0);
-    setValue("usdValue", value);
-  }, [watchQuantity, watchCryptocurrency, price]);
+    setValue("usdValue", (watchQuantity ?? 0) * displayPrice);
+  }, [watchQuantity, setValue, displayPrice]);
+
+  const handleEditOrder = (data: OrderDataType) => {
+    if (!initialData?.id) {
+      return;
+    }
+    editOrder(initialData?.id, { ...data, id: initialData.id });
+  };
+
+  const handleAddOrder = (data: OrderDataType) => {
+    const newOrder = { ...data, id: uuidv4() };
+    addOrder(newOrder);
+  };
 
   const onSubmit = (data: OrderDataType) => {
     if (initialData?.id) {
-      editOrder(initialData.id, { ...data, id: initialData.id });
+      handleEditOrder(data);
     } else {
-      const newOrder = {
-        ...data,
-        id: uuidv4(),
-      };
-      addOrder(newOrder);
+      handleAddOrder(data);
     }
 
     reset();
-    if (onSubmitSuccess) onSubmitSuccess();
+    onSubmitSuccess?.();
   };
 
   return (
@@ -139,7 +144,6 @@ const OrderForm: React.FC<OrderFormProps> = ({
           />
           {errors.direction && <ErrorText>This field is required</ErrorText>}
         </FormControl>
-
         <FormControl>
           <FormLabel id="direction-label" sx={{ fontWeight: "bold" }}>
             Cryptocurrency
@@ -157,7 +161,6 @@ const OrderForm: React.FC<OrderFormProps> = ({
             <InfoText>Select the cryptocurrency you want to buy/sell</InfoText>
           )}
         </FormControl>
-
         <FormControl>
           <Stack direction={{ base: "column", md: "row" }} gap={2}>
             <Box width={"100%"}>
@@ -181,7 +184,12 @@ const OrderForm: React.FC<OrderFormProps> = ({
               />
               {errors.quantity ? (
                 <ErrorText>
-                  Quantity must be a number greater than 0.00001
+                  {errors.quantity?.type === "required" &&
+                    "Quantity is required"}
+                  {errors.quantity?.type === "positive" &&
+                    "Quantity must be positive"}
+                  {errors.quantity?.type === "min" &&
+                    "Minimum quantity is 0.00001"}
                 </ErrorText>
               ) : (
                 <InfoText>
@@ -193,11 +201,10 @@ const OrderForm: React.FC<OrderFormProps> = ({
               watchValue={watchUSDValue}
               watchQuantity={watchQuantity}
               watchCryptocurrency={watchCryptocurrency}
-              price={price}
+              price={displayPrice}
             />
           </Stack>
         </FormControl>
-
         <FormControl>
           <Stack
             direction={{ base: "column", md: "row" }}
@@ -219,11 +226,11 @@ const OrderForm: React.FC<OrderFormProps> = ({
             <UTCTimeDisplay expirationDate={watchExpirationDate} />
           </Stack>
         </FormControl>
-
         <Button
           type="submit"
           color="neutral"
           sx={{ mt: 4, background: "black" }}
+          aria-label={initialData ? "Edit Order" : "Create Order"}
         >
           {initialData ? "Edit Order" : "Create Order"}
         </Button>
@@ -234,14 +241,14 @@ const OrderForm: React.FC<OrderFormProps> = ({
 
 export default OrderForm;
 
-const ErrorText = ({ children }: { children: React.ReactNode }) => (
+const ErrorText = React.memo(({ children }: { children: React.ReactNode }) => (
   <Typography color="danger" fontSize={12} sx={{ mt: 0.5 }}>
     {children}
   </Typography>
-);
+));
 
-const InfoText = ({ children }: { children: React.ReactNode }) => (
+const InfoText = React.memo(({ children }: { children: React.ReactNode }) => (
   <Typography color="neutral" fontSize={12} sx={{ mt: 0.5 }}>
     {children}
   </Typography>
-);
+));

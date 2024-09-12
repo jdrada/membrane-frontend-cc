@@ -8,7 +8,13 @@ export const convertISOToLocale = (date: string) => {
     minute: "numeric",
   });
 };
-export const convertISOtoUTC = (date: string): string => {
+export const convertISOtoUTC = (
+  date: string | undefined,
+  tableDate: boolean = false
+): string => {
+  if (!date) {
+    return "";
+  }
   const d = new Date(date);
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
@@ -32,7 +38,9 @@ export const convertISOtoUTC = (date: string): string => {
   const year = d.getUTCFullYear();
   const hours = d.getUTCHours().toString().padStart(2, "0");
   const minutes = d.getUTCMinutes().toString().padStart(2, "0");
-  const seconds = d.getUTCSeconds().toString().padStart(2, "0");
 
-  return `${dayName}, ${day} ${monthName} ${year} ${hours}:${minutes}:${seconds} UTC`;
+  if (tableDate) {
+    return `${dayName}, ${day} ${monthName} ${year}`;
+  }
+  return `${dayName}, ${day} ${monthName} ${year} ${hours}:${minutes} UTC`;
 };
