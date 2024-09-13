@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 
 type CryptoPrice = number;
@@ -15,7 +16,7 @@ export const fetchCryptoPrice = async (
       throw new Error("Invalid cryptocurrency");
     }
     return response.data[crypto].usd;
-  } catch (_) {
+  } catch (error) {
     return null;
   }
 };
