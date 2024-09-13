@@ -30,13 +30,11 @@ import FeedbackSnack from "../feedbackSnack/FeedbackSnack";
 type OrderFormProps = {
   initialData?: OrderDataType | null;
   onSubmitSuccess?: () => void;
-  onEditSuccess?: () => void;
 };
 
 const OrderForm: React.FC<OrderFormProps> = ({
   initialData,
   onSubmitSuccess,
-  onEditSuccess,
 }) => {
   const { blockchains: blockchainList = [] } = useGetBlockchains();
 
