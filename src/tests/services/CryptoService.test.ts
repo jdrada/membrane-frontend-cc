@@ -2,7 +2,8 @@ import { describe, test, expect, afterEach } from "vitest";
 import axios from "axios";
 
 import MockAdapter from "axios-mock-adapter";
-import { fetchCryptoPrice } from "../../../services/cryptoService";
+import { fetchCryptoPrice } from "../../services/cryptoService";
+import { faker } from "@faker-js/faker";
 
 const mockAxios = new MockAdapter(axios);
 
@@ -15,13 +16,14 @@ describe("fetchCryptoPrice", () => {
 
   test("should return the crypto price for a valid cryptocurrency", async () => {
     const crypto = "bitcoin";
-    const mockData = { bitcoin: { usd: 50000 } };
+    const fakeValue = faker.number.int();
+    const mockData = { bitcoin: { usd: fakeValue } };
     mockAxios
       .onGet(`${apiUrl}?ids=${crypto}&vs_currencies=usd`)
       .reply(200, mockData);
 
     const price = await fetchCryptoPrice(crypto);
-    expect(price).toBe(50000);
+    expect(price).toBe(fakeValue);
   });
 
   test("should return null if no cryptocurrency is provided", async () => {
