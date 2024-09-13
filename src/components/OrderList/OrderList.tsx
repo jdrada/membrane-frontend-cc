@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { useOrderStore } from "../../store/useOrderStore";
 import Table from "@mui/joy/Table";
 import { capitalizeFirstLetter } from "../../utils/stringUtils";
-import { Box, Button, Card, Drawer, Stack, Typography } from "@mui/joy";
+import { Box, Button, Card, Stack, Typography } from "@mui/joy";
 import { formatUSD } from "../../utils/currencyUtils";
 import { convertISOtoUTC } from "../../utils/dateUtils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import OrderForm from "../orderForm/OrderForm";
+
 import { OrderDataType } from "../../types/types";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 import { TD, TH } from "..";
+import EditDrawer from "./EditDrawer";
 
 const OrderList: React.FC = () => {
   const [editOrder, setEditOrder] = useState<{
@@ -38,42 +39,7 @@ const OrderList: React.FC = () => {
 
   return (
     <>
-      <Drawer
-        open={editOrder.showDrawer}
-        onClose={handleCloseEdit}
-        anchor="right"
-        color="primary"
-        invertedColors={false}
-        size="lg"
-        variant="plain"
-      >
-        <Box
-          sx={{
-            width: "full",
-            height: "100%",
-            px: 2,
-            py: 6,
-            position: "relative",
-          }}
-        >
-          <Button
-            color="neutral"
-            variant="plain"
-            size="sm"
-            onClick={handleCloseEdit}
-            sx={{
-              position: "absolute",
-              top: 6,
-              right: 6,
-              margin: 2,
-              zIndex: 100,
-            }}
-          >
-            <CloseOutlinedIcon />
-          </Button>
-          <OrderForm initialData={editOrder.order} />
-        </Box>
-      </Drawer>
+      <EditDrawer handleCloseEdit={handleCloseEdit} editOrder={editOrder} />
       <Box
         color="primary"
         component={Card}
