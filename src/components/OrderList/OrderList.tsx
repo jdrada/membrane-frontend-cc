@@ -25,7 +25,20 @@ const OrderList: React.FC = () => {
   const deleteOrder = useOrderStore((state) => state.deleteOrder);
 
   if (orders.length === 0) {
-    return <p>No orders found</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <Typography level="h2" sx={{ fontSize: "lg" }}>
+          No orders found yet. Create one!
+        </Typography>
+      </Box>
+    );
   }
 
   const handleEditOrder = (orderId: string) => {
