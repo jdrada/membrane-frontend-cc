@@ -1,1 +1,1 @@
-vitest --watch=false
+npm run test-pre-commit
