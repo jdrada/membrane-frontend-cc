@@ -3,7 +3,7 @@ import { fetchCryptoPrice } from "../services/cryptoService";
 
 type CryptoPriceType = number | null;
 
-export const CryptoPrice = (crypto: string | undefined) => {
+export const useCryptoPrice = (crypto: string | undefined) => {
   const { isLoading, error, data } = useQuery<CryptoPriceType>({
     queryKey: ["cryptoPrice", crypto ?? "default"],
     queryFn: async (): Promise<CryptoPriceType> => {

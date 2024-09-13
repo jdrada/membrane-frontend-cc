@@ -7,10 +7,10 @@ import { formatUSD } from "../../utils/currencyUtils";
 import { convertISOtoUTC } from "../../utils/dateUtils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import OrderForm from "../OrderForm/OrderForm";
+import OrderForm from "../orderForm/OrderForm";
 import { OrderDataType } from "../../types/types";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { TD, TH } from "./TableStuff";
+import { TD, TH } from "..";
 
 const OrderList: React.FC = () => {
   const [editOrder, setEditOrder] = useState<{

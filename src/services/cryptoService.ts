@@ -15,8 +15,7 @@ export const fetchCryptoPrice = async (
       throw new Error("Invalid cryptocurrency");
     }
     return response.data[crypto].usd;
-  } catch (error) {
-    console.error(error);
+  } catch (_) {
     return null;
   }
 };

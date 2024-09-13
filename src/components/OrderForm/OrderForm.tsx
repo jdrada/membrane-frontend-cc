@@ -10,17 +10,23 @@ import {
   Stack,
   Card,
 } from "@mui/joy";
-import { CryptoPrice } from "../../hooks/useCryptoPrice";
+
 import { DirectionEnum, OrderDataType } from "../../types/types";
-import DirectionRadioGroup from "./DirectionRadioGroup";
-import USDCostDisplay from "./USDCostDisplay";
-import UTCTimeDisplay from "./UTCTimeDisplay";
+
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
-import { ErrorText, InfoText } from "./FormTextHelpers";
-import BlockchainOrderSelect from "./BlockchainOrderSelect";
+
 import { useOrders } from "../../hooks/useOrders";
 import { useGetBlockchains } from "../../hooks/useGetBlockchains";
+import {
+  BlockchainOrderSelect,
+  DirectionRadioGroup,
+  ErrorText,
+  InfoText,
+  USDCostDisplay,
+  UTCTimeDisplay,
+} from "..";
+import { useCryptoPrice } from "../../hooks/useCryptoPrice";
 
 type OrderFormProps = {
   initialData?: OrderDataType | null;
@@ -34,7 +40,6 @@ const OrderForm: React.FC<OrderFormProps> = ({
   onEditSuccess,
 }) => {
   const { blockchains: blockchainList } = useGetBlockchains();
-  console.log(blockchainList);
 
   const {
     formState: { errors },
@@ -59,7 +64,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
   const watchExpirationDate = watch("expirationDate");
   const watchCryptocurrency = watch("cryptocurrency");
   const watchUSDValue = watch("usdValue");
-  const { price } = CryptoPrice(watchCryptocurrency);
+  const { price } = useCryptoPrice(watchCryptocurrency);
   const displayPrice = price ?? 0;
 
   useEffect(() => {
@@ -148,7 +153,9 @@ const OrderForm: React.FC<OrderFormProps> = ({
             ]}
             setValue={setValue}
           />
-          {errors.direction && <ErrorText>This field is required</ErrorText>}
+          {errors.direction && (
+            <ErrorText testId={"dir-input"}>This field is required</ErrorText>
+          )}
         </FormControl>
         <FormControl>
           <FormLabel id="direction-label" sx={{ fontWeight: "bold" }}>
@@ -162,7 +169,9 @@ const OrderForm: React.FC<OrderFormProps> = ({
             options={blockchainList}
           />
           {errors.cryptocurrency ? (
-            <ErrorText>This field is required</ErrorText>
+            <ErrorText testId={"crypto-input"}>
+              This field is required
+            </ErrorText>
           ) : (
             <InfoText>Select the cryptocurrency you want to buy/sell</InfoText>
           )}
@@ -174,6 +183,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
                 Quantity
               </FormLabel>
               <Input
+                data-testid={"quantity"}
                 sx={{ width: "100%" }}
                 title="quantity"
                 color={errors.quantity ? "danger" : "neutral"}
@@ -189,9 +199,11 @@ const OrderForm: React.FC<OrderFormProps> = ({
                 })}
               />
               {errors.quantity ? (
-                <ErrorText>
+                <ErrorText testId={"qty-input-hint-error"}>
                   {errors.quantity?.type === "required" &&
                     "Quantity is required"}
+                  {errors.quantity?.type === "valueAsNumber" &&
+                    "Value should be a number"}
                   {errors.quantity?.type === "positive" &&
                     "Quantity must be positive"}
                   {errors.quantity?.type === "min" &&
@@ -219,6 +231,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
             <Box width={"100%"}>
               <FormLabel id="time-label">Expiration Date</FormLabel>
               <Input
+                data-testid={"date-input"}
                 color={errors.expirationDate ? "danger" : "neutral"}
                 type="datetime-local"
                 {...register("expirationDate", {
@@ -231,7 +244,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
                 })}
               />
               {errors.expirationDate ? (
-                <ErrorText>
+                <ErrorText testId={"date-input-hint-error"}>
                   {errors.expirationDate?.type === "required"
                     ? "Expiration date is required"
                     : errors.expirationDate?.type === "futureDate"
