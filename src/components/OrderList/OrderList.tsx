@@ -2,13 +2,24 @@ import React, { useState } from "react";
 import { useOrderStore } from "../../store/useOrderStore";
 import Table from "@mui/joy/Table";
 import { capitalizeFirstLetter } from "../../utils/stringUtils";
-import { Box, Button, Card, Stack, Typography } from "@mui/joy";
+import {
+  Box,
+  Button,
+  Card,
+  Chip,
+  Dropdown,
+  Menu,
+  MenuButton,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/joy";
 import { formatUSD } from "../../utils/currencyUtils";
 import { convertISOtoUTC } from "../../utils/dateUtils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-import { OrderDataType } from "../../types/types";
+import { DirectionEnum, OrderDataType } from "../../types/types";
 
 import EditDrawer from "./EditDrawer";
 import { TD, TH } from "./TableStuff";
@@ -93,7 +104,7 @@ const OrderList: React.FC = () => {
               textAlign: "center",
               textWrap: "nowrap",
             },
-            "& thead th:nth-of-type(7)": { width: 80 },
+            "& thead th:nth-of-type(7)": { width: 20 },
           }}
         >
           <thead>
@@ -109,31 +120,64 @@ const OrderList: React.FC = () => {
           <tbody>
             {orders.map((order) => (
               <tr key={order.id}>
-                <TD text={order.direction} />
+                <TD>
+                  <Chip
+                    color={
+                      order.direction === DirectionEnum.BUY
+                        ? "success"
+                        : "primary"
+                    }
+                  >
+                    {order.direction}
+                  </Chip>
+                </TD>
                 <TD text={capitalizeFirstLetter(order.cryptocurrency)} />
                 <TD text={order.quantity} />
                 <TD text={formatUSD(order.usdValue)} />
                 <TD text={convertISOtoUTC(order.expirationDate, true)} />
                 <TD>
-                  <Stack direction="row" gap={1}>
-                    <Button
-                      color="neutral"
-                      variant="plain"
-                      size="sm"
-                      // onClick={() => onEdit(order.id as string)}
-                      onClick={() => handleEditOrder(order.id as string)}
-                    >
-                      <EditOutlinedIcon fontSize="small" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      color="danger"
-                      variant="plain"
-                      onClick={() => deleteOrder(order.id as string)}
-                    >
-                      <DeleteOutlineOutlinedIcon fontSize="small" />
-                    </Button>
-                  </Stack>
+                  <Dropdown>
+                    <MenuButton size="sm" sx={{ width: "full" }}>
+                      ...
+                    </MenuButton>
+                    <Menu variant="plain" size="sm">
+                      <MenuItem>
+                        <Button
+                          color="neutral"
+                          variant="plain"
+                          size="sm"
+                          onClick={() => handleEditOrder(order.id as string)}
+                        >
+                          <EditOutlinedIcon
+                            fontSize="small"
+                            sx={{
+                              mr: 2,
+                            }}
+                          />{" "}
+                          View/Edit
+                        </Button>
+                      </MenuItem>
+                      <MenuItem>
+                        <Button
+                          size="sm"
+                          color="danger"
+                          variant="plain"
+                          onClick={() => deleteOrder(order.id as string)}
+                          sx={{
+                            width: "100%",
+                          }}
+                        >
+                          <DeleteOutlineOutlinedIcon
+                            fontSize="small"
+                            sx={{
+                              mr: 2,
+                            }}
+                          />{" "}
+                          Delete
+                        </Button>
+                      </MenuItem>
+                    </Menu>
+                  </Dropdown>
                 </TD>
               </tr>
             ))}

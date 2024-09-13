@@ -1,4 +1,4 @@
-import { Typography } from "@mui/joy";
+import { Box, Typography } from "@mui/joy";
 
 export const TH = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -26,15 +26,27 @@ export const TD = ({
 }) => {
   return (
     <td>
-      <Typography
-        level="body-sm"
+      <Box
         sx={{
-          textAlign: "center",
+          width: "100%",
+          height: "100%",
+
+          display: "flex",
+          alignContent: "center",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {text}
-      </Typography>
-      {children}
+        <Typography
+          level="body-sm"
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          {text}
+        </Typography>
+        {children}
+      </Box>
     </td>
   );
 };

@@ -38,7 +38,7 @@ export default function USDCostDisplay({
             alignItems: "center",
           }}
         >
-          <Typography level="h3" sx={{}}>
+          <Typography level="h3">
             {value >= 0 ? formatUSD(value) : "Invalid Quantity"}
           </Typography>
           {
