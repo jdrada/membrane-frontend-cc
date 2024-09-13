@@ -18,15 +18,13 @@ import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 
 import { useOrders } from "../../hooks/useOrders";
 import { useGetBlockchains } from "../../hooks/useGetBlockchains";
-import {
-  BlockchainOrderSelect,
-  DirectionRadioGroup,
-  ErrorText,
-  InfoText,
-  USDCostDisplay,
-  UTCTimeDisplay,
-} from "..";
+
 import { useCryptoPrice } from "../../hooks/useCryptoPrice";
+import DirectionRadioGroup from "./DirectionRadioGroup";
+import { ErrorText, InfoText } from "./FormTextHelpers";
+import USDCostDisplay from "./USDCostDisplay";
+import UTCTimeDisplay from "./UTCTimeDisplay";
+import BlockchainOrderSelect from "./BlockchainOrderSelect";
 
 type OrderFormProps = {
   initialData?: OrderDataType | null;

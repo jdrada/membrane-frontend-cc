@@ -10,8 +10,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import { OrderDataType } from "../../types/types";
 
-import { TD, TH } from "..";
 import EditDrawer from "./EditDrawer";
+import { TD, TH } from "./TableStuff";
 
 const OrderList: React.FC = () => {
   const [editOrder, setEditOrder] = useState<{
