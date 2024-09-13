@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Container } from "@mui/joy";
-import { FeedbackSnack, OrderForm, OrderList } from "../components";
+import FeedbackSnack from "../components/feedbackSnack/FeedbackSnack";
+import OrderForm from "../components/orderForm/OrderForm";
+import OrderList from "../components/orderList/OrderList";
 
 const OrderPage: React.FC = () => {
   const [openToast, setOpenToast] = useState({ showToast: false, message: "" });

@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
-import { OrderForm } from "../../../components";
+
 import { mockBCList, mockInitialData } from "../../mocks";
 import { faker } from "@faker-js/faker";
+import OrderForm from "../../../components/orderForm/OrderForm";
 
 vi.mock("../../../hooks/useGetBlockchains", () => ({
   useGetBlockchains: () => ({ blockchains: mockBCList }),
